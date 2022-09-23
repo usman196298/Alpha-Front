@@ -1,3 +1,6 @@
+import React from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+
 import './App.css';
 import axios from "axios";
 import Articles from "./components/articles";
@@ -66,14 +69,46 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      <h1> ALPHA-BLOG REACT APP</h1>
-      <Articles articles={articles} />
+      <div className="App">
+        <h1> ALPHA-BLOG REACT APP</h1>
 
-      <Users users={users} />
+        <nav className="navbar navbar-expand-lg bg-light">
+          <div className="container-fluid">
+            <a className="navbar-brand" href="/">Alpha Blog</a>
 
-      <Categories categories={categories} />
-    </div>
+            <li className="nav-item">
+              <a href="/articles"> Articles </a>
+            </li>
+
+            <li className="nav-item">
+              <a href="/users"> Users </a>
+            </li>
+
+            <li className="nav-item">
+              <a href="/categories"> Categories </a>
+            </li>
+          </div>
+        </nav>
+
+        <BrowserRouter>
+          <Switch>
+
+            <Route path="/articles">
+              <Articles articles={articles} />
+            </Route>
+
+            <Route path="/users">
+              <Users users={users} />
+            </Route>
+
+            <Route path="/categories">
+              <Categories categories={categories} />
+            </Route>
+
+          </Switch>
+        </BrowserRouter>
+
+      </div>
   );
 }
 
