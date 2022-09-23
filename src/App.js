@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-
 import './App.css';
 import axios from "axios";
 import Articles from "./components/articles";
@@ -8,6 +7,8 @@ import Users from "./components/users";
 import Categories from "./components/categories";
 
 import { useEffect, useState } from 'react';
+import NewArticle from './components/NewArticle';
+import NewCategory from './components/NewCategory';
 
 const Articles_URL = "http://[::1]:4000/articles";
 
@@ -93,6 +94,10 @@ function App() {
         <BrowserRouter>
           <Switch>
 
+            <Route path="/articles/new">
+              <NewArticle/>
+            </Route>
+
             <Route path="/articles">
               <Articles articles={articles} />
             </Route>
@@ -101,9 +106,14 @@ function App() {
               <Users users={users} />
             </Route>
 
+            <Route path="/categories/new">
+              <NewCategory/>
+            </Route>
+
             <Route path="/categories">
               <Categories categories={categories} />
             </Route>
+
 
           </Switch>
         </BrowserRouter>

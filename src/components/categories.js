@@ -4,7 +4,7 @@ function Categories(props) {
   return (
     <div>
       <h1>Categories:</h1>
-      <div className="conatiner">
+      <div className="container">
         {props.categories.map((category) => {
           return (
                   <div key={category.id}>
