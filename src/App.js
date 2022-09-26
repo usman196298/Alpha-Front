@@ -7,68 +7,22 @@ import Users from "./components/users";
 import Categories from "./components/categories";
 
 import { useEffect, useState } from 'react';
+
 import NewArticle from './components/NewArticle';
+import EditArticle from './components/EditArticle';
+import ShowArticle from './components/ShowArticle';
+import DeleteArticle from './components/DeleteArticle';
+
 import NewCategory from './components/NewCategory';
+import EditCategory from './components/EditCategory';
+import ShowCategory from './components/ShowCategory';
 
-const Articles_URL = "http://[::1]:4000/articles";
-
-const Users_URL = "http://[::1]:4000/users";
-
-const Categories_URL = "http://[::1]:4000/categories";
-
-function getArticleAPI() {
-  return axios.get(Articles_URL).then((response) => response.data)
-}
-
-function getUserAPI() {
-  return axios.get(Users_URL).then((response) => response.data)
-}
-
-function getCategoryAPI() {
-  return axios.get(Categories_URL).then((response) => response.data)
-}
+import EditUser from './components/EditUser';
+import ShowUser from './components/ShowUser';
+import DeleteUser from './components/DeleteUser';
 
 
 function App() {
-  const  [articles, setArticles] = useState([]);
-
-  const  [users, setUsers] = useState([]);
-
-  const  [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    let mounted = true;
-    getArticleAPI().then((items) => {
-      if (mounted) {
-        setArticles(items);
-      }
-    });
-
-    return () => { (mounted = false) };
-  }, []);
-
-  useEffect(() => {
-    let mounted = true;
-    getUserAPI().then((items) => {
-      if (mounted) {
-        setUsers(items);
-      }
-    });
-
-    return () => { (mounted = false) };
-  }, []);
-
-  useEffect(() => {
-    let mounted = true;
-    getCategoryAPI().then((items) => {
-      if (mounted) {
-        setCategories(items);
-      }
-    });
-
-    return () => { (mounted = false) };
-  }, []);
-
   return (
       <div className="App">
         <h1> ALPHA-BLOG REACT APP</h1>
@@ -94,26 +48,63 @@ function App() {
         <BrowserRouter>
           <Switch>
 
+            <Route path="/articles/:id/delete">
+              <DeleteArticle/>
+            </Route>
+
             <Route path="/articles/new">
               <NewArticle/>
             </Route>
 
+            <Route path="/articles/:id/edit">
+              <EditArticle/>
+            </Route>
+
+            <Route path="/articles/:id">
+              <ShowArticle />
+            </Route>
+
+
             <Route path="/articles">
-              <Articles articles={articles} />
+              <Articles />
+            </Route>
+
+
+
+            <Route path="/users/:id/delete">
+              <DeleteUser/>
+            </Route>
+
+            <Route path="/users/:id/edit">
+              <EditUser />
+            </Route>
+
+            <Route path="/users/:id">
+              <ShowUser  />
             </Route>
 
             <Route path="/users">
-              <Users users={users} />
+              <Users/>
             </Route>
+
+
+
 
             <Route path="/categories/new">
               <NewCategory/>
             </Route>
 
-            <Route path="/categories">
-              <Categories categories={categories} />
+            <Route path="/categories/:id/edit">
+              <EditCategory/>
             </Route>
 
+            <Route path="/categories/:id">
+              <ShowCategory />
+            </Route>
+
+            <Route path="/categories">
+              <Categories />
+            </Route>
 
           </Switch>
         </BrowserRouter>
