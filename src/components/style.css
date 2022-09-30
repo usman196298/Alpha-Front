@@ -1,0 +1,34 @@
+body {
+  background-color:   lightgrey;
+}
+
+#navbar {
+  background-color: black !important;
+  justify-content: center;
+  height:100px;
+} 
+
+.colordiv {
+  background-color: #0dcaf0;
+}
+
+#filled-basic {
+  background-color: white
+}
+
+#form-heads {
+  color: white;
+}
+
+#submit-button {
+  color: white;
+}
+
+#demo-select-small {
+  color: white;
+  font-size: large;
+}
+
+a:hover {
+  text-decoration: none !important;
+}

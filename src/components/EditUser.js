@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-
+import { TextField, Grid, Button } from '@mui/material';
 
 function EditUser() {
     const params  = useParams();
@@ -51,29 +51,46 @@ function EditUser() {
 
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <p>Edit User: </p>
-        <input
-          type="text"
-          name="name"
-          placeholder="Enter Username"
-          value={formValue.name}
-          onChange={handleChange}
-        />
-        <br></br>
-        <br></br>
-        <input
-          type="text"
-          name="email"
-          placeholder="Enter your email"
-          value={formValue.email}
-          onChange={handleChange}
-        />
-        <br></br>
-        <br></br>
-        <button type="submit"> Submit </button>
-      </form>
+          <div>
+          <h2>Edit User: </h2>
+
+          <Grid  xs={12} container  justifyContent="center" alignItems="center">
+            <Grid xs={4} className="colordiv mt-2" justifyContent="center" alignItems="center">
+              <form onSubmit={handleSubmit}>
+                  
+                <br></br>
+                <h5 id="form-heads">Username</h5>
+                <TextField id="filled-basic" 
+                  type= "text"
+                  name="name"
+                  placeholder="Enter username"
+                  value={formValue.name}
+                  onChange={handleChange}
+                />
+                <br></br>
+                <br></br>
+
+                <h5 id="form-heads">Email</h5>
+                <TextField id="filled-basic"
+                  type="text"
+                  name="email"
+                  placeholder="Enter your email"
+                  value={formValue.email}
+                  onChange={handleChange}
+                />
+                <br></br>
+                <br></br>
+
+                <Button id="submit-button" type="submit" variant="outlined" color="info">Submit</Button>
+                
+                <br></br>
+                <br></br>
+                <br></br>
+
+              </form>
+            </Grid>
+          </Grid>
+
     </div>
   )
 }

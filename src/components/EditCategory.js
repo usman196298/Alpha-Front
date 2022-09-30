@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { TextField, Grid, Button } from '@mui/material';
 
 function EditCategory() {
 
@@ -37,25 +38,38 @@ function EditCategory() {
 
 
   return (
-    <div>
-      <div>
-        Category ID: {params.id} 
-      </div>
+          <div>
+            <div>
+              Category ID: {params.id} 
+            </div>
+            <h2>Edit Category: </h2>
 
-      <form onSubmit={handleSubmit}>
-        <p>Edit Category: </p>
-        <input
-          type="text"
-          name="name"
-          placeholder="Enter name of your Category"
-          value={formValue.name}
-          onChange={handleChange}
-        />
-        <br></br>
-        <br></br>
-        <button type="submit"> Submit </button>
-      </form>
-    </div>
+            <Grid  xs={12} container  justifyContent="center" alignItems="center">
+              <Grid xs={4} className="colordiv mt-2" justifyContent="center" alignItems="center">
+                <form onSubmit={handleSubmit}>
+                    
+                  <br></br>
+                  <h5 id="form-heads">Category's Name</h5>
+                  <TextField id="filled-basic" 
+                    type= "text"
+                    name="name"
+                    placeholder="Enter your category's name"
+                    value={formValue.name}
+                    onChange={handleChange}
+                  />
+                  <br></br>
+                  <br></br>
+
+                  <Button id="submit-button" type="submit" variant="outlined" color="info">Submit</Button>
+                  
+                  <br></br>
+                  <br></br>
+                  <br></br>
+
+                </form>
+              </Grid>
+            </Grid>
+          </div>
   )
 }
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from "axios";
-import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { Grid, Container, Card, CardContent, Typography, Button } from '@mui/material';
 
 const Categories_URL = "http://[::1]:4000/categories";
 
@@ -27,29 +27,34 @@ function Categories() {
   return (
     <div>
       <h1>Categories:</h1>
-      <div className="container">
+      <Container>
         {categories.map((category) => {
           return (
                   <div key={category.id}>
-                    <div className="row justify-content-md-center">
-                      <div className="col-8 mt-4">
-                        <div className="card text-center shadow mb-5 bg-white rounded">
-                          <div className="card-body">
-                            <h3 className="card-title"> {category.id} </h3>
-                            <p className="card-text">{category.name}</p>
+                    <Grid container justifyContent="center" alignItems="center">
+                      <Grid xs={8}>
+                        <Card variant = "outlined">
+                          <CardContent>
+                            <Typography variant="h5" component="div">
+                              <strong>{category.id}</strong>
+                            </Typography>
+                            <Typography variant="p" component="div">
+                              {category.name}
+                            </Typography>
+                            <br></br>
 
-                            <Link to = {'/categories/' + category.id + '/view'} className='btn btn-outline-success'>View</Link>
-                            <Link to = {'/categories/' + category.id + '/edit'} className='btn btn-outline-info'>Edit</Link>
+                            <Button href={'/categories/' + category.id + '/view'} variant="outlined" color="success">View</Button>
+                            <Button href={'/categories/' + category.id + '/edit'} variant="outlined" color="info">Edit</Button>
 
-                          </div>
-
-                        </div>
-                      </div>
-                    </div>
+                          </CardContent>
+                        </Card>
+                      </Grid>
+                      </Grid>
+                      <br></br><br></br>
                   </div>
           )
         })}
-      </div>
+      </Container>
     </div>
   )
 }

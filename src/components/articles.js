@@ -1,8 +1,8 @@
 import React from 'react'
 import axios from "axios";
-import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { CardContent, Grid, Typography, Card, Container, Button } from '@mui/material';
+
 
 // import NewArticle from './NewArticle';
 // import EditArticle from './EditArticle';
@@ -20,9 +20,6 @@ function Articles() {
 
   const  [articles, setArticles] = useState([]);
 
-  
-
-
   useEffect(() => {
     let mounted = true;
     getArticleAPI().then((items) => {
@@ -38,62 +35,35 @@ function Articles() {
   return (
           <div>
             <h1>Articles:</h1>  
-            <div className="container">
+            <Container>
               {articles.map((article) => {
                 return (
                         <div key={article.id}>
-                          <div className="row justify-content-md-center">
-                            <div className="col-8 mt-4">
-                              <div className="card text-center shadow mb-5 bg-white rounded">
-                                <div className="card-body">
-                                  <h3 className="card-title"> {article.title} </h3>
-                                  <p className="card-text">{article.description}</p>
-                                  <Link to = {'/articles/' + article.id + '/view'} className='btn btn-outline-success'>View</Link>
-                           
-                                  <Link to = {'/articles/' + article.id + '/edit'} className='btn btn-outline-info'>Edit</Link>
+                          <Grid container justifyContent="center" alignItems="center">
+                            <Grid xs={8}>
+                              <Card variant = "outlined" >
+                                <CardContent>
+                                  <Typography variant="h5" component="div">
+                                    <strong>{article.title}</strong>
+                                  </Typography>
+                                  <Typography variant="p" component="div">
+                                    {article.description}
+                                  </Typography>
+                                  <br></br>
 
-                                  <Link to = {'/articles/' + article.id + '/delete'} className='btn btn-outline-danger'>Delete</Link>
+                                  <Button href={'/articles/' + article.id + '/view'} variant="outlined" color="success">View</Button>
+                                  <Button href={'/articles/' + article.id + '/edit'} variant="outlined" color="info">Edit</Button>
+                                  <Button href={'/articles/' + article.id + '/delete'} variant="outlined" color="error">Delete</Button>
 
-                                </div>
-
-                                <div className="card-footer text-muted">
-                                  {/* <small>Created  TimeAgo{article.created_at} ago,
-                                        Edited TimeAgo{article.updated_at} ago </small> */}
-                                </div>  
-
-                              </div>
-                            </div>
-                          </div>
+                                </CardContent>
+                              </Card>
+                            </Grid>
+                          </Grid>
+                          <br></br><br></br>
                         </div>
                 )
             })}
-            </div>
-
-          {/* <BrowserRouter>
-            <Switch>
-                <Route path="/articles/:id/delete">
-                  <DeleteArticle/>
-                </Route>
-
-                <Route path="/articles/new">
-                  <NewArticle/>
-                </Route>
-
-                <Route path="/articles/:id/edit">
-                  <EditArticle />
-                </Route>
-
-                <Route path="/articles/:id">
-                  <ShowArticle />
-                </Route>
-
-
-                <Route path="/articles">
-                  <Articles />
-                </Route>
-                
-              </Switch>
-            </BrowserRouter> */}
+            </Container>
           </div>
   )
 }

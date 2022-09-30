@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-
+import { TextField, Grid, Button } from '@mui/material';
 
 function EditArticle() {
     const params  = useParams();
@@ -53,39 +53,58 @@ function EditArticle() {
 
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <p>Edit Article: </p>
-        <input
-          type="text"
-          name="title"
-          placeholder="Enter title of your article"
-          value={formValue.title}
-          onChange={handleChange}
-        />
-        <br></br>
-        <br></br>
-        <input
-          type="description"
-          name="description"
-          placeholder="Enter description"
-          value={formValue.description}
-          onChange={handleChange}
-        />
-        <br></br>
-        <br></br>
-         <input
-          type="category"
-          name="category"
-          placeholder="Choose Category"
-          value={formValue.category}
-          onChange={handleChange}
-        />
-        <br></br>
-        <br></br>
-        <button type="submit"> Submit </button>
-      </form>
-    </div>
+          <div>
+            <h2>Edit Article: </h2>
+
+            <Grid  xs={12} container  justifyContent="center" alignItems="center">
+              <Grid xs={4} className="colordiv mt-2" justifyContent="center" alignItems="center">
+                <form onSubmit={handleSubmit}>
+                    
+                  <br></br>
+                  <h5 id="form-heads">Title</h5>
+                  <TextField id="filled-basic" 
+                    type= "text"
+                    name="title"
+                    placeholder="Enter title of your article"
+                    value={formValue.title}
+                    onChange={handleChange}
+                  />
+                  <br></br>
+                  <br></br>
+
+                  <h5 id="form-heads">description</h5>
+                  <TextField id="filled-basic"
+                    type="description"
+                    name="description"
+                    placeholder="Enter description"
+                    value={formValue.description}
+                    onChange={handleChange}
+                  />
+                  <br></br>
+                  <br></br>
+
+                  <h5 id="form-heads">Category</h5>
+                  <TextField id="filled-basic"
+                  type="category"
+                  name="category"
+                  placeholder="Choose Category"
+                  value={formValue.category}
+                  onChange={handleChange}
+                />
+                  <br></br>
+                  <br></br>
+
+                  <Button id="submit-button" type="submit" variant="outlined" color="info">Submit</Button>
+                  
+                  <br></br>
+                  <br></br>
+                  <br></br>
+
+                </form>
+              </Grid>
+            </Grid>
+
+          </div>
   )
 }
 

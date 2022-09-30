@@ -1,13 +1,16 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './App.css';
-import axios from "axios";
+import './components/style.css'
+
+import Navbar from "./components/Navbar";
+
+import Signup from "./components/Signup";
+import Login from "./components/Login";
+
 import Articles from "./components/articles";
 import Users from "./components/users";
 import Categories from "./components/categories";
-
-import { useEffect, useState } from 'react';
-
 import NewArticle from './components/NewArticle';
 import EditArticle from './components/EditArticle';
 import ShowArticle from './components/ShowArticle';
@@ -22,32 +25,24 @@ import ShowUser from './components/ShowUser';
 import DeleteUser from './components/DeleteUser';
 
 
+
+import Home from './components/home';
 function App() {
   return (
-      <div className="App">
-        <h1> ALPHA-BLOG REACT APP</h1>
-
-        <nav className="navbar navbar-expand-lg bg-light">
-          <div className="container-fluid">
-            <a className="navbar-brand" href="/">Alpha Blog</a>
-
-            <li className="nav-item">
-              <a href="/articles"> Articles </a>
-            </li>
-
-            <li className="nav-item">
-              <a href="/users"> Users </a>
-            </li>
-
-            <li className="nav-item">
-              <a href="/categories"> Categories </a>
-            </li>
-          </div>
-        </nav>
+    <div className="App">
+        <Navbar></Navbar>
 
         <BrowserRouter>
           <Switch>
 
+            <Route path="/signup">
+              <Signup/>
+            </Route>
+
+            <Route path="/login">
+              <Login/>
+            </Route>
+        
             <Route path="/articles/:id/delete">
               <DeleteArticle/>
             </Route>
@@ -70,7 +65,6 @@ function App() {
             </Route>
 
 
-
             <Route path="/users/:id/delete">
               <DeleteUser/>
             </Route>
@@ -86,8 +80,6 @@ function App() {
             <Route path="/users">
               <Users/>
             </Route>
-
-
 
 
             <Route path="/categories/new">
@@ -106,11 +98,52 @@ function App() {
               <Categories />
             </Route>
 
+            <Route path="/">
+              <br></br>
+              <br></br>
+              <br></br>
+              <br></br>
+              <br></br>
+              <Home/>
+            </Route>
+
           </Switch>
         </BrowserRouter>
 
       </div>
+
   );
 }
 
 export default App;
+
+
+// NAVBAR IN BOOTSTRAP
+
+       {/* <nav className="navbar navbar-expand-lg bg-light">
+          <a className="navbar-brand" href='/'>ALPHA BLOG</a>
+          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
+          </button>
+            <div className="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                <li className="nav-item">
+                  <a className="nav-link" href='/users'>Bloggers</a>
+                </li>
+                <li className="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="/articles" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Articles
+                  </a>
+                  <ul className="dropdown-menu">  
+                    <a className="dropdown-item" href="/articles/new"> Create new article </a>
+                  </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="/categories" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Categories
+                  </a>
+                </li>
+              </ul>
+            </div>
+        </nav> */}

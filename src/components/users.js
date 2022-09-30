@@ -1,8 +1,7 @@
 import React from 'react'
 import axios from "axios";
-import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react';
-
+import { CardContent, Grid, Typography, Card, Container, Button } from '@mui/material';
 
 const Users_URL = "http://[::1]:4000/users";
 
@@ -28,30 +27,40 @@ function Users() {
   }, []);
 
   return (
-  <div>
-    <h1>Users:</h1>
-    <div className="container">
-      {users.map((user) => {
-        return (
-                <div key={user.id}>
-                  <div className="row justify-content-md-center">
-                    <div className="col-8 mt-4">
-                      <div className="card text-center shadow mb-5 bg-white rounded">
-                        <div className="card-body">
-                          <h3 className="card-title"> {user.username} </h3>
-                          <p className="card-text">{user.email}</p>
-                          <Link to = {'/users/' + user.id + '/view'} className='btn btn-outline-success'>View</Link>
-                          <Link to = {'/users/' + user.id + '/edit'} className='btn btn-outline-info'>Edit</Link>
-                          <Link to = {'/users/' + user.id + '/delete'} className='btn btn-outline-danger'>Delete</Link>
+          <div>
+            <h1>Users:</h1>
+            <Container>
+              {users.map((user) => {
+                return (
+                        <div key={user.id}>
+                          <Grid container justifyContent="center" alignItems="center">
+                            <Grid xs={8}>
+                              <Card variant = "outlined">
+                                
+                                <CardContent>
+                                  <Typography variant="h5" component="div">
+                                    <strong>{user.username}</strong>
+                                  </Typography>
+                                  <Typography variant="p" component="div">
+                                    {user.email}
+                                  </Typography>
+                                  <br></br>
+
+                                  <Button href={'/users/' + user.id + '/view'} variant="outlined" color="success">View</Button>
+                                  <Button href={'/users/' + user.id + '/edit'} variant="outlined" color="info">Edit</Button>
+                                  <Button href={'/users/' + user.id + '/delete'} variant="outlined" color="error">Delete</Button>
+
+                                </CardContent>
+
+                              </Card>
+                            </Grid>
+                          </Grid>
+                          <br></br><br></br>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-        )
-      })}
-    </div>
-  </div>
+                )
+              })}
+            </Container>
+          </div>
 )
 }
 

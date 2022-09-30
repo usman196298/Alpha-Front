@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { useParams } from 'react-router-dom';
+import { CardContent, Grid, Typography, Card, Container, Button } from '@mui/material';
 
 
 function get_article_data(article_URL) {
@@ -25,20 +25,33 @@ function ShowArticle() {
         return () => { (mounted = false) };
     }, []);
         return (
-          <div key={article.id}>
-            <div className="row justify-content-md-center">
-              <div className="col-8 mt-4">
-                <div className="card text-center shadow mb-5 bg-white rounded">
-                  <div className="card-body">
-                    <h3 className="card-title"> {article.title} </h3>
-                    <p className="card-title"> {article.description} </p>
-                    <Link to = {'/users/' + article.id + '/edit'} className='btn btn-outline-info'>Edit</Link>
-                    <Link to = {'/users/' + article.id + '/delete'} className='btn btn-outline-danger'>Delete</Link>
-                  </div>
+                <div>
+                  <Container>
+                    <br></br>
+                    <div key={article.id}>
+                      <Grid container justifyContent="center" alignItems="center">  
+                        <Grid xs={8}>
+                          <Card variant = "outlined">
+                    
+                            <CardContent>
+                              <Typography variant="h5" component="div">
+                                <strong>{article.title}</strong>
+                              </Typography>
+                              <Typography variant="p" component="div">
+                                {article.description}
+                              </Typography>
+                              <br></br>
+
+                              <Button href={'/articles/' + article.id + '/edit'} variant="outlined" color="info">Edit</Button>
+                              <Button href={'/articles/' + article.id + '/delete'} variant="outlined" color="error">Delete</Button>
+                            </CardContent>
+
+                          </Card>
+                        </Grid>
+                      </Grid>
+                    </div>
+                  </Container>
                 </div>
-              </div>
-            </div>
-        </div>
   )
 }
 

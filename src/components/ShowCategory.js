@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { useParams } from 'react-router-dom';
+import { CardContent, Grid, Typography, Card, Container, Button } from '@mui/material';
 
 
 function get_category_data(category_URL) {
@@ -25,20 +25,32 @@ function ShowCategory() {
         return () => { (mounted = false) };
     }, []);
         return (
-          <div key={category.id}>
-            <div className="row justify-content-md-center">
-              <div className="col-8 mt-4">
-                <div className="card text-center shadow mb-5 bg-white rounded">
-                  <div className="card-body">
-                    <h3 className="card-title"> {category.id} </h3>
-                    <h3 className="card-title"> {category.name} </h3>
-                    <Link to = {'/users/' + category.id + '/edit'} className='btn btn-outline-info'>Edit</Link>
-                    <Link to = {'/users/' + category.id + '/delete'} className='btn btn-outline-danger'>Delete</Link>
-                  </div>
-                </div>
+          <div>
+            <Container>
+              <br></br>
+              <div key={category.id}>
+                <Grid container justifyContent="center" alignItems="center">  
+                  <Grid xs={8}>
+                    <Card variant = "outlined">
+              
+                      <CardContent>
+                        <Typography variant="h5" component="div">
+                          <strong>{category.id}</strong>
+                        </Typography>
+                        <Typography variant="p" component="div">
+                          {category.name}
+                        </Typography>
+                        <br></br>
+
+                        <Button href={'/categories/' + category.id + '/edit'} variant="outlined" color="info">Edit</Button>
+                      </CardContent>
+
+                    </Card>
+                  </Grid>
+                </Grid>
               </div>
-            </div>
-        </div>
+            </Container>
+          </div>
   )
 }
 export default ShowCategory

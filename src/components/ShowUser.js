@@ -1,8 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { useParams } from 'react-router-dom';
-
+import { CardContent, Grid, Typography, Card, Container, Button } from '@mui/material';
 
 function get_user_data(user_URL) {
    return axios.get(user_URL).then((response) => response.data)
@@ -25,20 +24,33 @@ function ShowUser() {
         return () => { (mounted = false) };
     }, []);
         return (
-          <div key={user.id}>
-            <div className="row justify-content-md-center">
-              <div className="col-8 mt-4">
-                <div className="card text-center shadow mb-5 bg-white rounded">
-                  <div className="card-body">
-                    <h3 className="card-title"> {user.username} </h3>
-                    <p className="card-title"> {user.email} </p>
-                    <Link to = {'/users/' + user.id + '/edit'} className='btn btn-outline-info'>Edit</Link>
-                    <Link to = {'/users/' + user.id + '/delete'} className='btn btn-outline-danger'>Delete</Link>
-                  </div>
-                </div>
+                <div>      
+                  <Container>            
+                    <br></br>
+                    <div key={user.id}>
+                      <Grid container justifyContent="center" alignItems="center">  
+                        <Grid xs={8}>
+                          <Card variant = "outlined">
+                            
+                            <CardContent>
+                              <Typography variant="h5" component="div">
+                                <strong>{user.username}</strong>
+                              </Typography>
+                              <Typography variant="p" component="div">
+                                {user.email}
+                              </Typography>
+                              <br></br>
+
+                              <Button href={'/users/' + user.id + '/edit'} variant="outlined" color="info">Edit</Button>
+                              <Button href={'/users/' + user.id + '/delete'} variant="outlined" color="error">Delete</Button>
+                            </CardContent>
+
+                          </Card>
+                        </Grid>
+                      </Grid>
+                    </div>
+                  </Container>
               </div>
-            </div>
-        </div>
   )
 }
 export default ShowUser

@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios';
+import { TextField, Grid, Button } from '@mui/material';
 
 function NewCategory() {
 
@@ -34,21 +35,34 @@ function NewCategory() {
 
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <p>Create New Category: </p>
-        <input
-          type="text"
-          name="name"
-          placeholder="Enter name of your Category"
-          value={formValue.name}
-          onChange={handleChange}
-        />
-        <br></br>
-        <br></br>
-        <button type="submit"> Submit </button>
-      </form>
-    </div>
+          <div>
+            <h2>Create New Category: </h2>
+            <Grid  xs={12} container  justifyContent="center" alignItems="center">
+              <Grid xs={4} className="colordiv mt-2" justifyContent="center" alignItems="center">
+                <form onSubmit={handleSubmit}>
+                    
+                  <br></br>
+                  <h5 id="form-heads">Category's Name</h5>
+                  <TextField id="filled-basic" 
+                    type= "text"
+                    name="name"
+                    placeholder="Enter your category's name"
+                    value={formValue.name}
+                    onChange={handleChange}
+                  />
+                  <br></br>
+                  <br></br>
+
+                  <Button id="submit-button" type="submit" variant="outlined" color="info">Submit</Button>
+                  
+                  <br></br>
+                  <br></br>
+                  <br></br>
+
+                </form>
+              </Grid>
+            </Grid>
+          </div>
   )
 }
 
