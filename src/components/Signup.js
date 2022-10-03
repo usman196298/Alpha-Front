@@ -1,6 +1,8 @@
 import React from 'react'
 import axios from 'axios';
-import { TextField, Grid, Button } from '@mui/material';
+import { TextField, Grid, Button, Alert} from '@mui/material';
+import Box from '@mui/material/Box';
+
 
 function Signup() {
 
@@ -11,6 +13,7 @@ function Signup() {
   });
 
   const handleSubmit = (event) => {
+    event.preventDefault();
     // store the states in the form data
     const loginFormData = new FormData();
     loginFormData.append("username", formValue.username)
@@ -40,11 +43,21 @@ function Signup() {
     <div>
             <h2>Sign up for Alpha Blog</h2>
             <Grid  xs={12} container  justifyContent="center" alignItems="center">
-              <Grid xs={4} className="colordiv mt-2" justifyContent="center" alignItems="center">
+              <Grid xs={8} className="colordiv mt-2" justifyContent="center" alignItems="center">
+                <Box
+                  sx={{
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    marginTop: 4,
+                    height: '5%',
+                    width: 700,
+                    maxWidth: '100%',
+                  }}
+                >
                 <form onSubmit={handleSubmit}>
                   <br></br>
                   <h5 id="form-heads">Username</h5>
-                  <TextField id="filled-basic" 
+                  <TextField id="filled-basic" fullWidth
                     type= "text"
                     name="username"
                     placeholder="Enter username"
@@ -55,7 +68,7 @@ function Signup() {
                   <br></br>
 
                   <h5 id="form-heads">Email</h5>
-                  <TextField id="filled-basic"
+                  <TextField id="filled-basic" fullWidth
                     type="text"
                     name="email"
                     placeholder="Enter a valid email"
@@ -66,7 +79,7 @@ function Signup() {
                   <br></br>
 
                   <h5 id="form-heads">Password</h5>
-                  <TextField id="filled-basic"
+                  <TextField id="filled-basic" fullWidth
                     type="password"
                     name="password"
                     placeholder="Enter password"
@@ -83,6 +96,7 @@ function Signup() {
                   <br></br>
 
                 </form>
+                </Box>
               </Grid>
             </Grid>
           </div>
