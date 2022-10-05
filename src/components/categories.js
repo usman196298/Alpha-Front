@@ -11,8 +11,20 @@ function getCategoryAPI() {
 
 function Categories() {
 
+  const  [admins, setAdmins] = useState(false);
+  axios.get("http://localhost:4000/check",
+    { withCredentials: true }
+  ).then(response => {
+      if(response.data.user.admin) {
+      setAdmins(admins => response.data.user.admin);
+      }
+  })
+    .catch(err => {
+      setAdmins(admins => false);
+    })
+
+
   const  [categories, setCategories] = useState([]);
-  
   useEffect(() => {
     let mounted = true;
     getCategoryAPI().then((items) => {
@@ -44,7 +56,14 @@ function Categories() {
                             <br></br>
 
                             <Button href={'/categories/' + category.id + '/view'} variant="outlined" color="success">View</Button>
+
+                            {/* {console.log("Admin",admins)} */}
+
+                            { admins &&
+                            <>
                             <Button href={'/categories/' + category.id + '/edit'} variant="outlined" color="info">Edit</Button>
+                            </>
+                            }
 
                           </CardContent>
                         </Card>

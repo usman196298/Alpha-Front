@@ -1,32 +1,51 @@
 import React from 'react'
+import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { TextField, Grid, Button } from '@mui/material';
+
+function getUserAPI(x) {
+  const Users_URL = ('http://[::1]:4000/users/'+x );
+  return axios.get(Users_URL).then((response) => response.data)
+} 
 
 function EditUser() {
     const params  = useParams();
     const id = params.id
+
+    let history = useHistory();
+
+    const  [users, setUsers] = useState([]);
+    useEffect(() => {
+      let mounted = true;
+      getUserAPI(id).then((items) => {
+        if (mounted) {
+          setUsers(items);
+        }
+      });
   
-    // const AllUsers  = props.users;
+      return () => { (mounted = false) };
+    }, []);
 
-    // let found = [];
-    // const currentarticle = AllUsers.map(myuser => {
-    //   if (myuser.id == id )
-    //   {
-    //     found = myuser;
-    //   }
-    // })
 
+      useEffect(() => {
+        setformValue(users);
+      },[users]);
+
+
+      
     const [formValue, setformValue] = React.useState({
-        name: '',
-        email: ''
+        username: users.username,
+        email: users.email
     });
 
 
     const handleSubmit = (event) => {
+      event.preventDefault();
       // store the states in the form data
       const loginFormData = new FormData();
-      loginFormData.append("username", formValue.name)
+      loginFormData.append("username", formValue.username)
       loginFormData.append("email", formValue.email)
 
       try {
@@ -36,6 +55,9 @@ function EditUser() {
           url: ('http://[::1]:4000/users/' + params.id),
           data: loginFormData,
           headers: { "Content-Type": "multipart/form-data" },
+        }).then(response => {
+          console.log(response)
+          history.push("/users");
         });
       } catch(error) {
         console.log(error)
@@ -62,9 +84,9 @@ function EditUser() {
                 <h5 id="form-heads">Username</h5>
                 <TextField id="filled-basic" 
                   type= "text"
-                  name="name"
+                  name="username"
                   placeholder="Enter username"
-                  value={formValue.name}
+                  value={formValue.username}
                   onChange={handleChange}
                 />
                 <br></br>

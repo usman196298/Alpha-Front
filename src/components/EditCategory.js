@@ -1,18 +1,50 @@
 import React from 'react'
+import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { TextField, Grid, Button } from '@mui/material';
 
+
+function getCategoryAPI(x) {
+  const Category_URL = ('http://[::1]:4000/categories/'+x );
+  return axios.get(Category_URL).then((response) => response.data)
+} 
+
+
 function EditCategory() {
 
-    const [formValue, setformValue] = React.useState({
-      name: ''
-    });
-
     const params  = useParams();
+    const id = params.id;
+    
+    let history = useHistory();
+
+    const  [categories, setCategories] = useState([]);
+    useEffect(() => {
+      let mounted = true;
+      getCategoryAPI(id).then((items) => {
+        if (mounted) {
+          setCategories(items);
+        }
+      });
+  
+      return () => { (mounted = false) };
+    }, []);
+
+
+      useEffect(() => {
+        setformValue(categories);
+      },[categories]);
+
+
+
+    const [formValue, setformValue] = React.useState({
+      name: categories.name
+    });
   
     const handleSubmit = (event) => {
-      // store the states in the form data
+      event.preventDefault();
+      // store the states in the form data\
       const loginFormData = new FormData();
       loginFormData.append("name", formValue.name)
 
@@ -23,6 +55,9 @@ function EditCategory() {
           url: ('http://[::1]:4000/categories/' + params.id),
           data: loginFormData,
           headers: { "Content-Type": "form-data" },
+        }).then(response => {
+          console.log(response)
+          history.push("/categories");
         });
       } catch(error) {
         console.log(error)

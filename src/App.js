@@ -1,5 +1,7 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import axios from 'axios';
+import { useEffect, useState } from 'react'
 import './App.css';
 import './components/style.css'
 
@@ -7,6 +9,9 @@ import Navbar from "./components/Navbar";
 
 import Signup from "./components/Signup";
 import Login from "./components/Login";
+import Logout from "./components/Logout";
+import Check from "./components/Check";
+
 
 import Articles from "./components/articles";
 import Users from "./components/users";
@@ -28,87 +33,142 @@ import DeleteUser from './components/DeleteUser';
 
 import Home from './components/home';
 function App() {
+
+  const  [users, setUsers] = useState(false);
+  axios.get("http://localhost:4000/check",
+    { withCredentials: true }
+  ).then(response => {
+      setUsers(user=> true);
+      // console.log("response",response.data.user);
+      console.log("response",users);  
+  })  
+
   return (
     <div className="App">
         <Navbar></Navbar>
 
-        <BrowserRouter>
+      { users && 
+      <>
+        <BrowserRouter forceRefresh={true}>
           <Switch>
-
-            <Route path="/signup">
-              <Signup/>
-            </Route>
-
-            <Route path="/login">
-              <Login/>
+            <Route exact path="/logout">
+              <Logout/>
             </Route>
         
-            <Route path="/articles/:id/delete">
+            <Route exact path="/articles/:id/delete">
               <DeleteArticle/>
             </Route>
 
-            <Route path="/articles/new">
+            <Route exact path="/articles/new">
               <NewArticle/>
             </Route>
 
-            <Route path="/articles/:id/edit">
+            <Route exact path="/articles/:id/edit">
               <EditArticle/>
             </Route>
-
-            <Route path="/articles/:id">
-              <ShowArticle />
+         
+            <Route exact path="/articles/:id/view">
+              <ShowArticle /> 
             </Route>
-
-
-            <Route path="/articles">
+         
+            <Route exact path="/articles">
               <Articles />
             </Route>
 
-
-            <Route path="/users/:id/delete">
+             <Route exact path="/users/:id/delete">
               <DeleteUser/>
             </Route>
 
-            <Route path="/users/:id/edit">
+            <Route exact path="/users/:id/edit">
               <EditUser />
             </Route>
 
-            <Route path="/users/:id">
+            <Route exact path="/users/:id/view">
               <ShowUser  />
             </Route>
 
-            <Route path="/users">
+            <Route exact path="/users">
               <Users/>
             </Route>
 
-
-            <Route path="/categories/new">
+            <Route exact path="/categories/new">
               <NewCategory/>
             </Route>
-
-            <Route path="/categories/:id/edit">
+         
+            <Route exact path="/categories/:id/edit">
               <EditCategory/>
             </Route>
+         
+            <Route exact path="/categories/:id/view">
+              <ShowCategory />
+            </Route>
+          
 
-            <Route path="/categories/:id">
+            <Route exact path="/categories">
+              <Categories />
+            </Route>
+          
+
+            <Route exact path="/">
+              <br></br><br></br>
+              <br></br><br></br>
+              <Home/>
+            </Route>  
+          </Switch>
+        </BrowserRouter>
+        </>
+        } 
+
+
+        { !users && 
+        <>
+        <BrowserRouter forceRefresh={true}>
+          <Switch>
+            <Route exact path="/signup">
+              <Signup/>
+            </Route>
+
+            <Route exact path="/login">
+              <Login/>
+            </Route>
+
+            <Route exact path="/articles/:id/view">
+              <ShowArticle /> 
+            </Route>
+
+            <Route exact path="/articles">
+              <Articles />
+            </Route>
+
+            <Route exact path="/users/:id/view">
+              <ShowUser  />
+            </Route>
+
+            <Route exact path="/users">
+              <Users/>
+            </Route>
+
+            <Route exact path="/categories/:id/view">
               <ShowCategory />
             </Route>
 
-            <Route path="/categories">
+            <Route exact path="/categories">
               <Categories />
             </Route>
 
-            <Route path="/">
-              <br></br>
-              <br></br>
-              <br></br>
-              <br></br>
-              <br></br>
+            <Route exact path="/">
               <Home/>
             </Route>
-
           </Switch>
         </BrowserRouter>
+        </>
+        }
+        {/* <Route path='*'>
+          <Home/>
+        </Route> */}
+
+        
+
 
       </div>
 
@@ -116,34 +176,3 @@ function App() {
 }
 
 export default App;
-
-
-// NAVBAR IN BOOTSTRAP
-
-       {/* <nav className="navbar navbar-expand-lg bg-light">
-          <a className="navbar-brand" href='/'>ALPHA BLOG</a>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-            <div className="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                <li className="nav-item">
-                  <a className="nav-link" href='/users'>Bloggers</a>
-                </li>
-                <li className="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="/articles" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Articles
-                  </a>
-                  <ul className="dropdown-menu">  
-                    <a className="dropdown-item" href="/articles/new"> Create new article </a>
-                  </ul>
-                </li>
-
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="/categories" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Categories
-                  </a>
-                </li>
-              </ul>
-            </div>
-        </nav> */}

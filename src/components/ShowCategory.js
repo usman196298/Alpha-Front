@@ -14,6 +14,19 @@ function ShowCategory() {
 
     <h1>Show Category: </h1>
 
+    const  [admins, setAdmins] = useState(false);
+    axios.get("http://localhost:4000/check",
+      { withCredentials: true }
+    ).then(response => {
+        if(response.data.user.admin) {
+        setAdmins(admins => response.data.user.admin);
+        }
+    })
+      .catch(err => {
+        setAdmins(admins => false);
+      })
+
+
     const [category, setCategory] = useState([]);
     useEffect(() => {
         let mounted = true;
@@ -42,7 +55,12 @@ function ShowCategory() {
                         </Typography>
                         <br></br>
 
+                        { admins &&
+                        <>
                         <Button href={'/categories/' + category.id + '/edit'} variant="outlined" color="info">Edit</Button>
+                        </>
+                        }
+                        
                       </CardContent>
 
                     </Card>

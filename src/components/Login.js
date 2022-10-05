@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { Alert, Grid } from '@mui/material';
+import { Alert, Grid, responsiveFontSizes } from '@mui/material';
 
 function Login() {
 
@@ -20,13 +20,15 @@ function Login() {
     const loginFormData = new FormData();
     loginFormData.append("email", formValue.email)
     loginFormData.append("password", formValue.password)
-  axios.post("http://localhost:4000/login", {
-    email: formValue.email,
-    password: formValue.password,
+
+    axios.post("http://localhost:4000/login", {
+      email: formValue.email,
+      password: formValue.password,
   },
     { withCredentials: true }
   ).then(response => {
-    if (response.status === "201" || response.statusText === 'Created') {
+    console.log(response)
+    if (response.status === 201 || response.statusText === 'Created') {
         history.push("/articles");
         }
   })
@@ -106,7 +108,7 @@ function Login() {
     </div>
   )
 }
-// const useAuth = () => React.useContext(AuthContext);
+
 export default Login;
 
 

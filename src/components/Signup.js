@@ -1,11 +1,14 @@
 import React from 'react'
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 import { TextField, Grid, Button, Alert} from '@mui/material';
 import Box from '@mui/material/Box';
 
 
 function Signup() {
 
+  let history = useHistory();
+  const [hasError, setError] = React.useState(false);
   const [formValue, setformValue] = React.useState({
     username: '',
     email: '',
@@ -20,17 +23,22 @@ function Signup() {
     loginFormData.append("email", formValue.email)
     loginFormData.append("password", formValue.password)
 
-    try {
-      // make axios post request
-      const response =  axios({
-        method: "post",
-        url: "http://[::1]:4000/users",
-        data: loginFormData,
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-    } catch(error) {
-      console.log(error)
-    }
+    axios.post("http://localhost:4000/users", {
+      username: formValue.username,
+      email: formValue.email,
+      password: formValue.password,
+    },
+      { withCredentials: true }
+    ).then(response => {
+      console.log(response)
+      if (response.status === 200 || response.statusText === 'Created') {
+          history.push("/articles");
+          }
+    })
+      .catch(err => {
+        console.log("error");
+          setError(error=> true);
+      })
   }
 
   const handleChange = (event) => {
@@ -104,3 +112,16 @@ function Signup() {
 }
 
 export default Signup
+
+  //   try {
+  //     // make axios post request
+  //     const response =  axios({
+  //       method: "post",
+  //       url: "http://[::1]:4000/users",
+  //       data: loginFormData,
+  //       headers: { "Content-Type": "multipart/form-data" },
+  //     });
+  //   } catch(error) {
+  //     console.log(error)
+  //   }
+  // }

@@ -16,10 +16,36 @@ function getArticleAPI() {
 }
 
 
+
 function Articles() {
+  
+  // Checking for User and Admin
+  const  [currUse, setcurrUse] = useState(false);
+  axios.get("http://localhost:4000/check",
+    { withCredentials: true }
+  ).then(response => {
+        setcurrUse(currUse => response.data.user.id);
+  })
+    .catch(err => {
+      setcurrUse(currUse=> false);
+      console.log("error:",currUse);
+    })
+
+  const  [admins, setAdmins] = useState(false);
+  axios.get("http://localhost:4000/check",
+  { withCredentials: true }
+).then(response => {
+    if(response.data.user.admin) {
+    // setAdmins(admins => response.data.user.admin);
+    setAdmins(admins => true);
+    }
+})
+  .catch(err => {
+    setAdmins(admins => false);
+  })
+
 
   const  [articles, setArticles] = useState([]);
-
   useEffect(() => {
     let mounted = true;
     getArticleAPI().then((items) => {
@@ -52,8 +78,20 @@ function Articles() {
                                   <br></br>
 
                                   <Button href={'/articles/' + article.id + '/view'} variant="outlined" color="success">View</Button>
+
+                                  { ( (article.user_id == currUse) || (admins) || ((article.user_id == currUse) && (admins)) ) &&
+                                  <>
                                   <Button href={'/articles/' + article.id + '/edit'} variant="outlined" color="info">Edit</Button>
                                   <Button href={'/articles/' + article.id + '/delete'} variant="outlined" color="error">Delete</Button>
+                                  </>
+                                  }
+
+                                  {/* { admins &&
+                                    <>
+                                  <Button href={'/articles/' + article.id + '/edit'} variant="outlined" color="info">Edit</Button>
+                                  <Button href={'/articles/' + article.id + '/delete'} variant="outlined" color="error">Delete</Button>
+                                    </>
+                                  } */}
 
                                 </CardContent>
                               </Card>

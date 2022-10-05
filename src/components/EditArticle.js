@@ -1,30 +1,48 @@
 import React from 'react'
+import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { TextField, Grid, Button } from '@mui/material';
+
+
+function getArticleAPI(x) {
+  const Articles_URL = ('http://[::1]:4000/articles/'+x );
+  return axios.get(Articles_URL).then((response) => response.data)
+} 
 
 function EditArticle() {
     const params  = useParams();
     const id = params.id
   
-    // const AllArticles  = props.articles;
+    let history = useHistory();
+    
+    const  [articles, setArticles] = useState([]);
+    useEffect(() => {
+      let mounted = true;
+      getArticleAPI(id).then((items) => {
+        if (mounted) {
+          setArticles(items);
+        }
+      });
+  
+      return () => { (mounted = false) };
+    }, []);
 
-    // let found = [];
-    // const currentarticle = AllArticles.map(myarticle => {
-    //   if (myarticle.id == id )
-    //   {
-    //     found = myarticle;
-    //   }
-    // })
+
+      useEffect(() => {
+        setformValue(articles);
+      },[articles]);
 
     const [formValue, setformValue] = React.useState({
-        title: '',
-        description: '',
-        category: ''
+        title: articles.title,
+        description: articles.description,
+        category: articles.category
     });
 
-
+  
     const handleSubmit = (event) => {
+      event.preventDefault();
       // store the states in the form data
       const loginFormData = new FormData();
       loginFormData.append("title", formValue.title)
@@ -38,6 +56,9 @@ function EditArticle() {
           url: ('http://[::1]:4000/articles/' + params.id),
           data: loginFormData,
           headers: { "Content-Type": "multipart/form-data" },
+        }).then(response => {
+          console.log(response)
+          history.push("/articles");
         });
       } catch(error) {
         console.log(error)

@@ -10,8 +10,34 @@ function get_user_data(user_URL) {
 function ShowUser() {
     const params=useParams();
     const user_URL = ("http://[::1]:4000/users/"+params.id);
-
+    
     <h1>Show User: </h1>
+
+    // Checking for Same User
+    const  [currUse, setcurrUse] = useState(false);
+    axios.get("http://localhost:4000/check",
+      { withCredentials: true }
+    ).then(response => {
+          setcurrUse(currUse => response.data.user.id);
+    })
+      .catch(err => {
+        setcurrUse(currUse=> false);
+        console.log("error:",currUse);
+      })
+
+    const  [admins, setAdmins] = useState(false);
+    axios.get("http://localhost:4000/check",
+      { withCredentials: true }
+    ).then(response => {
+        if(response.data.user.admin) {
+        // setAdmins(admins => response.data.user.admin);
+        setAdmins(admins => true);
+        }
+    })
+      .catch(err => {
+        setAdmins(admins => false);
+      })
+
 
     const [user, setUser] = useState([]);
     useEffect(() => {
@@ -41,8 +67,13 @@ function ShowUser() {
                               </Typography>
                               <br></br>
 
+                              {( (user.id == currUse) || (admins) || ((user.id == currUse) && (admins)) ) &&
+                              <>
                               <Button href={'/users/' + user.id + '/edit'} variant="outlined" color="info">Edit</Button>
                               <Button href={'/users/' + user.id + '/delete'} variant="outlined" color="error">Delete</Button>
+                              </>
+                              }
+
                             </CardContent>
 
                           </Card>

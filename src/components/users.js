@@ -13,8 +13,32 @@ function getUserAPI() {
 
 function Users() {
 
-  const  [users, setUsers] = useState([]);
+    // Checking for User and Admin
+    const  [currUse, setcurrUse] = useState(false);
+    axios.get("http://localhost:4000/check",
+      { withCredentials: true }
+    ).then(response => {
+          setcurrUse(currUse => response.data.user.id);
+    })
+      .catch(err => {
+        setcurrUse(currUse=> false);
+      })
 
+    const  [admins, setAdmins] = useState(false);
+    axios.get("http://localhost:4000/check",
+      { withCredentials: true }
+    ).then(response => {
+        if(response.data.user.admin) {
+        // setAdmins(admins => response.data.user.admin);
+        setAdmins(admins => true);
+        }
+    })
+      .catch(err => {
+        setAdmins(admins => false);
+      })
+
+
+  const  [users, setUsers] = useState([]);
   useEffect(() => {
     let mounted = true;
     getUserAPI().then((items) => {
@@ -46,9 +70,15 @@ function Users() {
                                   </Typography>
                                   <br></br>
 
-                                  <Button href={'/users/' + user.id + '/view'} variant="outlined" color="success">View</Button>
+                                  <Button href={'/users/' + user.id + '/view'} variant="outlined" color="success">View</Button> 
+                                  
+                                   
+                                  {( (user.id == currUse) || (admins) || ((user.id == currUse) && (admins)) ) &&
+                                  <>
                                   <Button href={'/users/' + user.id + '/edit'} variant="outlined" color="info">Edit</Button>
                                   <Button href={'/users/' + user.id + '/delete'} variant="outlined" color="error">Delete</Button>
+                                  </>
+                                  }
 
                                 </CardContent>
 

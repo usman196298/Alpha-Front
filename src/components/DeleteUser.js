@@ -7,7 +7,7 @@ function DeleteUser() {
 
   const params  = useParams();
   const id = params.id
-console.log(id)
+
   useEffect( () => {
     axios.delete('http://localhost:4000/users/' + id)
   })
