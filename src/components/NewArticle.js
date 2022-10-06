@@ -1,33 +1,79 @@
 import React from 'react'
 import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { AppBar, InputLabel, MenuItem, Toolbar, IconButton, Typography, FormControl} from '@mui/material';
 import { TextField, Grid, Button } from '@mui/material';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+
+
+function getCategoryAPI() {
+  const Categories_URL = "http://[::1]:4000/categories";
+  return axios.get(Categories_URL).then((response) => response.data)
+}
+
 
 function NewArticle() {
 
+   let history = useHistory();
+
     const [formValue, setformValue] = React.useState({
       title: '',
-      description: ''
+      description: '',
+      category_ids:''
     });
+
+    const  [categories, setCategories] = useState([]);
+    useEffect(() => {
+      let mounted = true;
+      getCategoryAPI().then((items) => {
+        if (mounted) {
+          setCategories(items);
+        }
+      });
+  
+      return () => { (mounted = false) };
+    }, []);
+
+    const  [myCategory, setmyCategory] = useState([]);
+
   
     const handleSubmit = (event) => {
-      // store the states in the form data
-      const loginFormData = new FormData();
-      loginFormData.append("title", formValue.title)
-      loginFormData.append("description", formValue.description)
+      event.preventDefault();
+      axios.post("http://localhost:4000/articles", {
+        title: formValue.title,
+        description: formValue.description,
+        category_ids: myCategory
+    },
+      { withCredentials: true }
+    ).then(response => {
+          history.push("/articles");
+    }).catch(error => {
+    console.log(error)
+    })
+}
 
-      try {
-        // make axios post request
-        const response =  axios({
-          method: "post",
-          url: "http://[::1]:4000/articles/",
-          data: loginFormData,
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-      } catch(error) {
-        console.log(error)
-      }
-    }
-  
+
+    // const handleSubmit = (event) => {
+    //   // store the states in the form data
+    //   const loginFormData = new FormData();
+    //   loginFormData.append("title", formValue.title)
+    //   loginFormData.append("description", formValue.description)
+    //   loginFormData.append("category", formValue.category)
+
+    //   try {
+    //     // make axios post request
+    //     const response =  axios({
+    //       method: "post",
+    //       url: "http://[::1]:4000/articles/",
+    //       data: loginFormData,
+    //       headers: { "Content-Type": "multipart/form-data" },
+    //     });
+    //   } catch(error) {
+    //     console.log(error)
+    //   }
+    // }
+
     const handleChange = (event) => {
       setformValue({
         ...formValue,
@@ -35,6 +81,9 @@ function NewArticle() {
       });
     }
 
+    const handleChanger = (event) => {
+      setmyCategory(event.target.value);
+    };
 
   return (
           <div>
@@ -66,6 +115,29 @@ function NewArticle() {
                   <br></br>
                   <br></br>
 
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Category</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="filled-basic"
+                      value= {[myCategory]}
+                      label="myCategory"
+                      onChange={handleChanger}
+                    >
+                    
+                    {categories.map((category) => (
+                          <MenuItem  key={category.id} value={category.id}>
+                                {category.name}
+                          </MenuItem>
+                    )
+                      )}
+                    </Select>
+                  </FormControl>
+
+                  <br></br>
+                  <br></br> 
+
+
                   <Button id="submit-button" type="submit" variant="outlined" color="info">Submit</Button>
                   
                   <br></br>
@@ -80,3 +152,25 @@ function NewArticle() {
 }
 
 export default NewArticle
+
+
+
+// <InputLabel id="demo-select-small">Categories</InputLabel>
+// {categories.map((category) => {
+//   return (
+//     <div key={category.id}>
+//       <Select labelId="demo-select-small" id="demo-select-small">
+//       {/* <MenuItem> */}
+//         <Typography variant="p" component="div">
+//             {category.name}
+//         </Typography>
+//       {/* </MenuItem> */}
+    
+//       </Select>
+//     </div>
+//     )} 
+//   )}
+
+// <br></br>
+// <br></br>
+

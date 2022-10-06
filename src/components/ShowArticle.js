@@ -8,6 +8,7 @@ function get_article_data(article_URL) {
    return axios.get(article_URL).then((response) => response.data)
 }
 
+
 function ShowArticle() {
     const params=useParams();
     const user_URL = ("http://[::1]:4000/articles/"+params.id);
@@ -41,11 +42,21 @@ function ShowArticle() {
 
 
     const [article, setArticle] = useState([]);
+    const [category, setcategory] = useState();
+    
     useEffect(() => {
         let mounted = true;
         get_article_data(user_URL).then((item) => {
             if (mounted) {
-                setArticle(item);
+              console.log("item",item)
+              // console.log("i",item.cat[0].name)
+                setArticle(item.article);
+                // setcategory(item.cat[0].name);
+                if (item.cat.length>=1){
+                  setcategory(item.cat[0].name);
+           
+                }
+          
             }
         });
         return () => { (mounted = false) };
@@ -67,6 +78,9 @@ function ShowArticle() {
                                 {article.description}
                               </Typography>
                               <br></br>
+                              <Typography variant="p" component="div">
+                                <strong>{category}</strong>
+                              </Typography>
 
                               { ( (article.user_id == currUse) || (admins) || ((article.user_id == currUse) && (admins)) ) &&
                               <>

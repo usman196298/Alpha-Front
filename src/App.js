@@ -10,6 +10,7 @@ import Navbar from "./components/Navbar";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
 import Logout from "./components/Logout";
+import Footer from "./components/Footer";
 import Check from "./components/Check";
 
 
@@ -30,21 +31,30 @@ import ShowUser from './components/ShowUser';
 import DeleteUser from './components/DeleteUser';
 
 
-
 import Home from './components/home';
 function App() {
 
   const  [users, setUsers] = useState(false);
-  axios.get("http://localhost:4000/check",
-    { withCredentials: true }
-  ).then(response => {
-      setUsers(user=> true);
-      // console.log("response",response.data.user);
-      console.log("response",users);  
-  })  
+  const  [work, setWork] = useState(false);
+
+  useEffect(() => {
+axios.get("http://localhost:4000/check",
+  { withCredentials: true }
+).then(response => {
+    setUsers(user=> true);
+    setWork(work=>true);
+    console.log("Users: ",users)
+})
+  .catch(err => {
+    setWork(work=>true)
+    console.log("error: ",work);
+  })
+},[users]);
 
   return (
     <div className="App">
+      { work &&
+      <>
         <Navbar></Navbar>
 
       { users && 
@@ -110,17 +120,20 @@ function App() {
           
 
             <Route exact path="/">
-              <br></br><br></br>
-              <br></br><br></br>
               <Home/>
             </Route>  
+
+            <Route path='*'>
+              <Redirect to="/"></Redirect>
+            </Route>
+            
           </Switch>
         </BrowserRouter>
         </>
-        } 
+      } 
 
 
-        { !users && 
+      { !users && 
         <>
         <BrowserRouter forceRefresh={true}>
           <Switch>
@@ -159,20 +172,23 @@ function App() {
             <Route exact path="/">
               <Home/>
             </Route>
+
+            <Route path='*'>
+              <Redirect to="/"></Redirect>
+            </Route>
+            
           </Switch>
         </BrowserRouter>
         </>
-        }
-        {/* <Route path='*'>
-          <Home/>
-        </Route> */}
+      }
+      <Footer></Footer>
+    </>
+    } 
 
-        
-
-
-      </div>
-
+    </div>
   );
+
+
 }
 
 export default App;

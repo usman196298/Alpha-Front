@@ -13,8 +13,8 @@ const Articles_URL = "http://[::1]:4000/articles";
 
 function getArticleAPI() {
   return axios.get(Articles_URL).then((response) => response.data)
+  
 }
-
 
 
 function Articles() {
@@ -24,6 +24,7 @@ function Articles() {
   axios.get("http://localhost:4000/check",
     { withCredentials: true }
   ).then(response => {
+    console.log("resp",response.data);
         setcurrUse(currUse => response.data.user.id);
   })
     .catch(err => {
@@ -49,6 +50,7 @@ function Articles() {
   useEffect(() => {
     let mounted = true;
     getArticleAPI().then((items) => {
+      
       if (mounted) {
         setArticles(items);
       }

@@ -32,3 +32,19 @@ body {
 a:hover {
   text-decoration: none !important;
 }
+
+#sticky-footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.jumbot {
+  background-image: url("penbg.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 600px;
+  color:#fff;
+}
