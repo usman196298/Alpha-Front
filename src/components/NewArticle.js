@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { AppBar, InputLabel, MenuItem, Toolbar, IconButton, Typography, FormControl} from '@mui/material';
 import { TextField, Grid, Button } from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Alert from 'react-bootstrap/Alert';
 
 
 function getCategoryAPI() {
@@ -16,6 +17,7 @@ function getCategoryAPI() {
 function NewArticle() {
 
    let history = useHistory();
+   const [hasError, setError] = React.useState(false);
 
     const [formValue, setformValue] = React.useState({
       title: '',
@@ -49,7 +51,7 @@ function NewArticle() {
     ).then(response => {
           history.push("/articles");
     }).catch(error => {
-    console.log(error)
+      setError(error=> true);
     })
 }
 
@@ -87,6 +89,12 @@ function NewArticle() {
 
   return (
           <div>
+            {hasError &&
+             <Alert variant="danger" onClose={() => setError(false)} dismissible>
+              <p>Creation Failed! Your Credentials  are  incorrect.</p>
+             </Alert>
+            }
+
             <h2>Create New Article:</h2>
             <Grid  xs={12} container  justifyContent="center" alignItems="center">
               <Grid xs={4} className="colordiv mt-2" justifyContent="center" alignItems="center">
@@ -115,8 +123,8 @@ function NewArticle() {
                   <br></br>
                   <br></br>
 
-                  <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Category</InputLabel>
+                  <h5 id="form-heads">Category</h5>
+                  <FormControl>
                     <Select
                       labelId="demo-simple-select-label"
                       id="filled-basic"

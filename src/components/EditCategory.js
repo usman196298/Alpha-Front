@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-import { TextField, Grid, Button } from '@mui/material';
+import {TextField, Grid, Button} from '@mui/material';
+import Alert from 'react-bootstrap/Alert';
 
 
 function getCategoryAPI(x) {
@@ -18,6 +19,7 @@ function EditCategory() {
     const id = params.id;
     
     let history = useHistory();
+    const [hasError, setError] = React.useState(false);
 
     const  [categories, setCategories] = useState([]);
     useEffect(() => {
@@ -41,28 +43,42 @@ function EditCategory() {
     const [formValue, setformValue] = React.useState({
       name: categories.name
     });
-  
+
     const handleSubmit = (event) => {
       event.preventDefault();
-      // store the states in the form data\
       const loginFormData = new FormData();
       loginFormData.append("name", formValue.name)
+      axios.put('http://[::1]:4000/categories/'+params.id, {
+        name: formValue.name,
+    },
+      { withCredentials: true }
+    ).then(response => {
+        history.push("/categories");
+      }).catch(error => {
+        setError(error=> true);
+      })
+  }
 
-      try {
-        // make axios post request
-        const response =  axios({
-          method: "put",
-          url: ('http://[::1]:4000/categories/' + params.id),
-          data: loginFormData,
-          headers: { "Content-Type": "form-data" },
-        }).then(response => {
-          console.log(response)
-          history.push("/categories");
-        });
-      } catch(error) {
-        console.log(error)
-      }
-    }
+    // const handleSubmit = (event) => {
+    //   event.preventDefault();
+    //   // store the states in the form data\
+    //   const loginFormData = new FormData();
+    //   loginFormData.append("name", formValue.name)
+
+    //   try {
+    //     // make axios post request
+    //     const response =  axios({
+    //       method: "put",
+    //       url: ('http://[::1]:4000/categories/' + params.id),
+    //       data: loginFormData,
+    //       headers: { "Content-Type": "form-data" },
+    //     }).then(response => {
+    //       history.push("/categories");
+    //     });
+    //   } catch(error) {
+    //     setError(error=> true);
+    //   }
+    // }
   
     const handleChange = (event) => {
       setformValue({
@@ -74,9 +90,12 @@ function EditCategory() {
 
   return (
           <div>
-            <div>
-              Category ID: {params.id} 
-            </div>
+            {hasError &&
+             <Alert variant="danger" onClose={() => setError(false)} dismissible>
+              <p>Editing  Failed! Your Credentials  are  incorrect.</p>
+             </Alert>
+            }
+
             <h2>Edit Category: </h2>
 
             <Grid  xs={12} container  justifyContent="center" alignItems="center">

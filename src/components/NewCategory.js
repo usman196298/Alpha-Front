@@ -1,30 +1,32 @@
 import React from 'react'
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 import { TextField, Grid, Button } from '@mui/material';
+import Alert from 'react-bootstrap/Alert';
 
 function NewCategory() {
+
+  let history = useHistory();
+  const [hasError, setError] = React.useState(false);
 
     const [formValue, setformValue] = React.useState({
       name: ''
     });
-  
     const handleSubmit = (event) => {
-      // store the states in the form data
+      event.preventDefault();
       const loginFormData = new FormData();
       loginFormData.append("name", formValue.name)
-
-      try {
-        // make axios post request
-        const response =  axios({
-          method: "post",
-          url: "http://[::1]:4000/categories/",
-          data: loginFormData,
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-      } catch(error) {
-        console.log(error)
-      }
-    }
+      axios.post('http://[::1]:4000/categories/', {
+        name: formValue.name,
+    },
+      { withCredentials: true }
+    ).then(response => {
+        console.log(response)
+            history.push("/categories");
+      }).catch(error => {
+        setError(error=> true);
+      })
+  }
   
     const handleChange = (event) => {
       setformValue({
@@ -36,6 +38,12 @@ function NewCategory() {
 
   return (
           <div>
+            {hasError &&
+             <Alert variant="danger" onClose={() => setError(false)} dismissible>
+              <p>Creation Failed! Your Credentials  are  incorrect.</p>
+             </Alert>
+            }
+
             <h2>Create New Category: </h2>
             <Grid  xs={12} container  justifyContent="center" alignItems="center">
               <Grid xs={4} className="colordiv mt-2" justifyContent="center" alignItems="center">

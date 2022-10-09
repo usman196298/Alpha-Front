@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import { Redirect } from 'react-router-dom';
 
+
 function DeleteArticle() {
 
   const params  = useParams();
@@ -13,7 +14,6 @@ function DeleteArticle() {
   })
   return (
     <div>
-      show
       <Redirect to = '/articles'></Redirect> 
    </div>
   )

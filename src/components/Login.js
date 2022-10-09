@@ -3,7 +3,8 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { Alert, Grid, responsiveFontSizes } from '@mui/material';
+import { Grid, responsiveFontSizes } from '@mui/material';
+import Alert from 'react-bootstrap/Alert';
 
 function Login() {
 
@@ -46,11 +47,9 @@ function Login() {
   return (
     <div>
       {hasError &&
-        <Grid container justifyContent="center" id="errors" >
-          <Alert severity="error" onClose={() => { }}>
-            Login  Failed!,Your Credentials  are  incorrect.
-          </Alert>
-        </Grid>
+        <Alert variant="danger" onClose={() => setError(false)} dismissible>
+        <p>Login Failed! Your Credentials  are  incorrect.</p>
+        </Alert>
       }
       <h1>Login</h1>
 

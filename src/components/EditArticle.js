@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import { TextField, Grid, Button } from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { AppBar, InputLabel, MenuItem, Toolbar, IconButton, Typography, FormControl} from '@mui/material';
-
+import Alert from 'react-bootstrap/Alert';
 
 function getArticleAPI(x) {
   const Articles_URL = ('http://[::1]:4000/articles/'+x );
@@ -24,6 +24,7 @@ function EditArticle() {
     const id = params.id
   
     let history = useHistory();
+    const [hasError, setError] = React.useState(false);
         
     const  [articles, setArticles] = useState([]);
     useEffect(() => {
@@ -63,7 +64,7 @@ function EditArticle() {
         console.log(response)
             history.push("/articles");
       }).catch(error => {
-        console.log(error);
+        setError(error=> true);
       })
   }
 
@@ -120,6 +121,12 @@ function EditArticle() {
 
   return (
           <div>
+            {hasError &&
+             <Alert variant="danger" onClose={() => setError(false)} dismissible>
+              <p>Editing  Failed! Your Credentials  are  incorrect.</p>
+             </Alert>
+            }
+
             <h2>Edit Article: </h2>
 
             <Grid  xs={12} container  justifyContent="center" alignItems="center">
@@ -149,9 +156,8 @@ function EditArticle() {
                   <br></br>
                   <br></br>
 
-
-                  <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Category</InputLabel>
+                  <h5 id="form-heads">Category</h5>
+                  <FormControl>
                     <Select
                       labelId="demo-simple-select-label"
                       id="filled-basic"

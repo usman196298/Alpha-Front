@@ -32,8 +32,6 @@ function Navbar() {
    
     })
 
-  
-
 
   return (
     <div>
