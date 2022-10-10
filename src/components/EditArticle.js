@@ -19,6 +19,11 @@ function getCategoryAPI() {
 }
 
 
+function getCategory_article_API(x) {
+  const Categories_URL = "http://[::1]:4000/articles/"+x+"/edit";
+  return axios.get(Categories_URL).then((response) => response.data)
+}
+
 function EditArticle() {
     const params  = useParams();
     const id = params.id
@@ -39,10 +44,29 @@ function EditArticle() {
     }, []);
 
 
+    const  [article_category, setArtcategory] = useState([]);
+    useEffect(() => {
+      let mounted = true;
+      getCategory_article_API(id).then((items) => {
+        if (mounted) {
+              //  if (items[0].length >=1 ){
+           setArtcategory(items[0].name);
+              //  }
+        }
+      });
+  
+      return () => { (mounted = false) };
+    }, []);
+  
+
+    // console.log("Category Value: ",article_category);
+
+
       useEffect(() => {
         setformValue(articles);
+
       },[articles]);
-       console.log("articles",articles);
+
     const [formValue, setformValue] = React.useState({
         title: articles.title,
         description: articles.description
@@ -51,7 +75,12 @@ function EditArticle() {
   
     const  [myCategory, setmyCategory] = useState([]);
 
-  
+
+    useEffect(() => {
+      setmyCategory(article_category);
+
+    },[article_category]);
+
     const handleSubmit = (event) => {
       event.preventDefault();
       axios.put('http://[::1]:4000/articles/' + params.id, {
@@ -61,7 +90,6 @@ function EditArticle() {
     },
       { withCredentials: true }
     ).then(response => {
-        console.log(response)
             history.push("/articles");
       }).catch(error => {
         setError(error=> true);
@@ -156,14 +184,25 @@ function EditArticle() {
                   <br></br>
                   <br></br>
 
+                  <h5 id="form-heads">Previous Category</h5>
+                  <TextField id="filled-basic"
+                    type="text"
+                    name="mycategory"
+                    value={article_category}
+                    onChange={handleChange}
+                  />
+                  <br></br>
+                  <br></br>
+
                   <h5 id="form-heads">Category</h5>
-                  <FormControl>
+                  <FormControl sx={{ m: 1, minWidth: 300 }}>
                     <Select
                       labelId="demo-simple-select-label"
                       id="filled-basic"
                       value= {[myCategory]}
                       label="myCategory"
                       onChange={handleChanger}
+                      defaultValue={[article_category]}
                     >
                     
                     {categories.map((category) => (

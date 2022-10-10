@@ -124,7 +124,7 @@ function NewArticle() {
                   <br></br>
 
                   <h5 id="form-heads">Category</h5>
-                  <FormControl>
+                  <FormControl sx={{ m: 1, minWidth: 300 }}>
                     <Select
                       labelId="demo-simple-select-label"
                       id="filled-basic"

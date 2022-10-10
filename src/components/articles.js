@@ -3,17 +3,10 @@ import axios from "axios";
 import { useEffect, useState } from 'react';
 import { CardContent, Grid, Typography, Card, Container, Button } from '@mui/material';
 
-
-// import NewArticle from './NewArticle';
-// import EditArticle from './EditArticle';
-// import ShowArticle from './ShowArticle';
-// import DeleteArticle from './DeleteArticle';
-
 const Articles_URL = "http://[::1]:4000/articles";
 
 function getArticleAPI() {
-  return axios.get(Articles_URL).then((response) => response.data)
-  
+  return axios.get(Articles_URL).then((response) => response.data) 
 }
 
 
